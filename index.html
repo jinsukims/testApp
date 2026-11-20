@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>할 일 관리</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <!-- 1. 헤더 -->
+    <header class="header">
+      <h1>할 일 관리</h1>
+      <p id="today" class="today"></p>
+    </header>
+
+    <!-- 안내 문구(저장 오류 등) -->
+    <div id="notices" class="notices" role="status"></div>
+
+    <!-- 2. 진행률 영역 (변화는 aria-live로 알림) -->
+    <section class="progress" aria-label="진행률">
+      <p id="progress-text" class="progress-text" aria-live="polite" aria-atomic="true"></p>
+      <div id="progress-bar" class="progress-track" role="progressbar" aria-label="전체 완료율"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+      <p id="progress-categories" class="progress-categories"></p>
+    </section>
+
+    <!-- 3. 입력 영역 -->
+    <form id="task-form" class="task-form" novalidate>
+      <input id="task-title" type="text" maxlength="100" placeholder="할 일 제목" autocomplete="off"
+             aria-label="할 일 제목" aria-describedby="form-message">
+      <select id="task-category" aria-label="카테고리"></select>
+      <button type="submit">추가</button>
+    </form>
+    <p id="category-hint" class="category-hint" aria-live="polite"></p>
+    <p id="form-message" class="form-message" role="alert"></p>
+
+    <!-- 4. 필터 영역 -->
+    <section id="filters" class="filters" aria-label="필터">
+      <div id="category-tabs" class="filter-group" role="group" aria-label="카테고리 필터"></div>
+      <div id="status-tabs" class="filter-group" role="group" aria-label="상태 필터"></div>
+    </section>
+
+    <!-- 5. 할 일 목록 -->
+    <ul id="task-list" class="task-list" aria-label="할 일 목록"></ul>
+    <p id="empty-message" class="empty-message">할 일을 추가해 보세요</p>
+
+    <!-- 하단 영역 -->
+    <footer class="list-footer">
+      <p id="remaining-count" class="remaining-count"></p>
+      <button id="clear-completed" type="button" class="clear-btn">완료 항목 지우기</button>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

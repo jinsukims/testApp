@@ -1,0 +1,195 @@
+==============================================================
+ GitHub에 testApp 저장소를 만들면서 올리는 방법
+ 대상: https://github.com/jinsukims/testApp
+==============================================================
+
+※ 처음 올리는 폴더(A)와, 이미 git으로 관리 중인 이 Todos 폴더(B)는
+  순서가 조금 다릅니다. 해당하는 쪽을 따라 하세요.
+
+
+##############################################################
+ A. 처음 올리는 폴더일 때 (git을 한 번도 쓰지 않은 폴더)
+##############################################################
+
+[0단계] 준비 확인 (처음 한 번만)
+--------------------------------------------------------------
+git --version
+gh --version
+gh auth status
+
+  → 첫 두 줄: git과 GitHub CLI(gh)가 설치되어 있는지 확인
+  → gh auth status: GitHub에 로그인되어 있는지 확인
+    로그인되어 있지 않으면 gh auth login 을 실행해 안내에 따라 로그인
+
+커밋 작성자 정보 설정 (처음 한 번만)
+git config --global user.name "jinsukims"
+git config --global user.email "본인 이메일"
+
+
+[1단계] 올릴 폴더로 이동
+--------------------------------------------------------------
+cd "C:/Users/AYU/Desktop/Claude/올릴폴더"
+
+  → 명령은 항상 올릴 프로젝트 폴더 안에서 실행해야 합니다.
+
+
+[2단계] git 저장소로 만들기
+--------------------------------------------------------------
+git init
+git branch -M main
+
+  → git init: 이 폴더를 git이 관리하게 만듦 (숨김 폴더 .git 생성)
+  → git branch -M main: 기본 브랜치 이름을 main으로 정함
+
+
+[3단계] 올리지 않을 파일 정하기 (.gitignore)
+--------------------------------------------------------------
+폴더에 .gitignore 파일을 만들고 올리지 않을 파일 이름이나 패턴을
+한 줄에 하나씩 적습니다.
+
+  예)
+  캡쳐*.png
+  *.log
+  비밀번호.txt
+
+  → 이 파일에 적힌 항목은 git add를 해도 무시됩니다.
+  → 비밀번호나 API 키가 든 파일은 꼭 여기에 넣으세요.
+
+
+[4단계] 올릴 파일 고르기 (스테이징)
+--------------------------------------------------------------
+git add .
+git status
+
+  → git add . : 현재 폴더의 파일 전부를 고름 (.gitignore에 적힌 파일은 빠짐)
+  → 특정 파일만 올리려면 이름을 직접 적음: git add index.html app.js
+  → git status 로 초록색(staged)으로 표시된 파일이 맞는지 꼭 확인
+
+
+[5단계] 커밋 만들기
+--------------------------------------------------------------
+git commit -m "testApp 첫 업로드"
+git log --oneline
+
+  → git commit: 고른 파일을 하나의 저장 시점(커밋)으로 기록
+    -m 뒤에 무엇을 했는지 적음
+  → git log --oneline: 커밋이 만들어졌는지 확인
+
+
+[6단계] GitHub에 testApp 저장소를 만들면서 올리기
+--------------------------------------------------------------
+gh repo create jinsukims/testApp --public --source=. --remote=origin --push
+
+  이 명령 하나로 저장소 생성 + 연결 + 업로드를 한 번에 처리합니다.
+
+  jinsukims/testApp  만들 저장소 (계정 이름/저장소 이름)
+  --public           공개 저장소 (비공개로 하려면 --private)
+  --source=.         지금 폴더를 저장소 내용으로 사용
+  --remote=origin    이 폴더와 새 저장소를 origin이라는 이름으로 연결
+  --push             만든 뒤 커밋을 바로 업로드
+
+  → 설명을 붙이려면 --description "설명" 을 덧붙이세요.
+
+
+[7단계] 결과 확인
+--------------------------------------------------------------
+git remote -v
+git ls-remote origin main
+gh repo view jinsukims/testApp --web
+
+  → git remote -v: origin이 https://github.com/jinsukims/testApp.git 인지 확인
+  → git ls-remote origin main: GitHub에 커밋이 올라갔는지 확인
+    (해시가 git log에서 본 값과 같아야 함)
+  → gh repo view ... --web: 브라우저로 저장소 페이지 열기
+
+
+##############################################################
+ B. 지금 이 Todos 폴더를 testApp에도 올릴 때
+##############################################################
+
+이 폴더는 이미 git 저장소이고 커밋도 있습니다.
+그래서 A의 2~5단계(init, add, commit)는 건너뛰고 연결만 정하면 됩니다.
+현재 origin은 todo-app에 연결되어 있으므로 아래 둘 중 하나를 고르세요.
+
+
+[방법 B-1] todo-app은 그대로 두고 testApp에도 올리기 (권장)
+--------------------------------------------------------------
+cd "C:/Users/AYU/Desktop/Claude/Todos"
+git status
+gh repo create jinsukims/testApp --public --source=. --remote=testapp --push
+
+  → 먼저 git status 로 커밋하지 않은 변경이 없는지 확인
+  → --remote=testapp: origin 이름은 이미 todo-app이 쓰고 있어서
+    다른 이름(testapp)으로 연결
+
+  결과적으로 원격 저장소가 두 개가 됩니다.
+    origin   → todo-app
+    testapp  → testApp
+
+  앞으로 올릴 때는 어디로 보낼지 이름을 적습니다.
+    git push origin main    # todo-app으로
+    git push testapp main   # testApp으로
+  그냥 git push 만 쓰면 기존처럼 todo-app으로 갑니다.
+
+
+[방법 B-2] 앞으로는 testApp만 쓰기 (연결 바꾸기)
+--------------------------------------------------------------
+cd "C:/Users/AYU/Desktop/Claude/Todos"
+git remote remove origin
+gh repo create jinsukims/testApp --public --source=. --remote=origin --push
+
+  → git remote remove origin: 이 폴더와 todo-app의 연결만 끊음
+    (GitHub의 todo-app 저장소는 지워지지 않음)
+  → 그다음 testApp을 새 origin으로 연결해 올림
+  → 이후 git push 는 testApp으로 감
+
+
+##############################################################
+ 참고 1. gh 없이 git만으로 하는 방법
+##############################################################
+
+gh를 쓸 수 없다면 저장소는 웹에서 만들고, 연결과 업로드는 git으로 합니다.
+
+1) https://github.com/new 에 접속
+2) Repository name에 testApp 입력, Public 또는 Private 선택
+3) README, .gitignore, license는 체크하지 말고 Create repository 클릭
+   (체크하면 GitHub 쪽에 첫 커밋이 생겨서, 내 커밋과 충돌해 push가 거부됨)
+4) 터미널에서 실행
+
+   git remote add origin https://github.com/jinsukims/testApp.git
+   git push -u origin main
+
+   → git remote add: 새 저장소를 origin이라는 이름으로 연결
+     (B-1처럼 이름을 다르게 하려면 origin 대신 testapp 사용)
+   → -u: 이 연결을 기본값으로 기억해서, 다음부터는 git push 만 써도 됨
+
+
+##############################################################
+ 참고 2. 올린 뒤 수정할 때마다
+##############################################################
+
+git status                    # 바뀐 파일 확인
+git add .                     # 올릴 파일 고르기
+git commit -m "변경 내용"      # 커밋 만들기
+git push                      # GitHub에 업로드
+
+
+##############################################################
+ 참고 3. 자주 만나는 오류
+##############################################################
+
+오류: Name already exists on this account
+  원인: 같은 이름의 저장소가 이미 있음
+  해결: 다른 이름을 쓰거나 기존 저장소에 git remote add로 연결
+
+오류: remote origin already exists
+  원인: origin 이름이 이미 쓰이는 중
+  해결: B-1처럼 다른 이름을 쓰거나, B-2처럼 기존 연결을 지운 뒤 다시 실행
+
+오류: rejected ... (fetch first)
+  원인: GitHub 쪽에 내 컴퓨터에 없는 커밋이 있음 (README를 체크해서 만든 경우 등)
+  해결: git pull origin main --allow-unrelated-histories 로 합친 뒤 다시 git push
+
+오류: src refspec main does not match any
+  원인: 아직 커밋이 없음
+  해결: git add 와 git commit 을 먼저 실행

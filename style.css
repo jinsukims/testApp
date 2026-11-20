@@ -1,0 +1,387 @@
+/* 색상 변수 */
+:root {
+  --color-work: #2f6fe4;
+  --color-work-bg: #e6efff;
+  --color-personal: #1a7f46;
+  --color-personal-bg: #e3f6ea;
+  --color-study: #7d3cc8;
+  --color-study-bg: #f1e7fc;
+  --color-primary: #3b6ef5;
+  --color-focus: #ff9f1a;
+  --color-danger: #c33;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Malgun Gothic", sans-serif;
+  background: #f4f5f7;
+  color: #222;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+/* 키보드 포커스 표시 */
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.app {
+  max-width: 640px;
+  margin: 40px auto;
+  padding: 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+/* 헤더 */
+.header h1 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.today {
+  margin: 4px 0 16px;
+  color: #666;
+}
+
+/* 상단 안내 문구 */
+.notice {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border: 1px solid #f0c36d;
+  border-radius: 6px;
+  background: #fff8e6;
+  color: #7a5200;
+  font-size: 0.9rem;
+}
+
+/* 진행률 영역 */
+.progress {
+  margin-bottom: 16px;
+}
+
+.progress-text {
+  margin: 0 0 6px;
+  font-weight: 600;
+}
+
+.progress-track {
+  height: 10px;
+  background: #e9ebef;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  width: 0;
+  height: 100%;
+  background: var(--color-primary);
+  transition: width 0.2s;
+}
+
+.progress-categories {
+  margin: 6px 0 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* 입력 영역 */
+.task-form {
+  display: flex;
+  gap: 8px;
+}
+
+.task-form input {
+  flex: 1;
+  min-width: 0;
+}
+
+.task-form input,
+.task-form select,
+.task-form button {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.task-form button {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+  cursor: pointer;
+}
+
+/* 자동 분류 안내 */
+.category-hint {
+  margin: 6px 0 0;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.category-hint:empty {
+  display: none;
+}
+
+.form-message {
+  min-height: 1.2em;
+  margin: 6px 0 0;
+  color: var(--color-danger);
+  font-size: 0.9rem;
+}
+
+/* 필터 영역 */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.filter-btn {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  background: #fff;
+  color: #444;
+  cursor: pointer;
+}
+
+.filter-btn.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+/* 할 일 목록 */
+.task-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 4px;
+  border-bottom: 1px solid #eee;
+}
+
+.toggle-checkbox {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* 긴 제목은 줄바꿈되고 버튼을 밀어내지 않음 */
+.task-title {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* 카테고리 배지 */
+.badge {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.badge-work {
+  color: var(--color-work);
+  background: var(--color-work-bg);
+}
+
+.badge-personal {
+  color: var(--color-personal);
+  background: var(--color-personal-bg);
+}
+
+.badge-study {
+  color: var(--color-study);
+  background: var(--color-study-bg);
+}
+
+/* 완료 항목: 취소선 + 흐리게 */
+.task-item.completed .task-title {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.edit-btn,
+.delete-btn,
+.save-btn,
+.cancel-btn {
+  flex-shrink: 0;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+}
+
+.delete-btn {
+  border-color: #e0b4b4;
+  color: var(--color-danger);
+}
+
+.save-btn {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+/* 수정 모드 */
+.task-item.editing {
+  flex-wrap: wrap;
+}
+
+.edit-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.edit-title,
+.edit-category {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.edit-message {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--color-danger);
+  font-size: 0.9rem;
+}
+
+.edit-message:empty {
+  display: none;
+}
+
+.empty-message {
+  padding: 24px 0;
+  text-align: center;
+  color: #888;
+}
+
+.empty-message[hidden] {
+  display: none;
+}
+
+/* 하단 영역 */
+.list-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.remaining-count {
+  margin: 0;
+  color: #555;
+}
+
+.clear-btn {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.clear-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* 모바일(600px 이하): 입력 영역 세로 배치, 터치 크기 44px 이상 */
+@media (max-width: 600px) {
+  .app {
+    margin: 0;
+    padding: 16px;
+    border-radius: 0;
+    box-shadow: none;
+    min-height: 100vh;
+  }
+
+  .header h1 {
+    font-size: 1.4rem;
+  }
+
+  .task-form {
+    flex-direction: column;
+  }
+
+  .task-form input,
+  .task-form select,
+  .task-form button,
+  .filter-btn,
+  .edit-btn,
+  .delete-btn,
+  .save-btn,
+  .cancel-btn,
+  .clear-btn,
+  .edit-title,
+  .edit-category {
+    min-height: 44px;
+  }
+
+  .edit-btn,
+  .delete-btn,
+  .save-btn,
+  .cancel-btn {
+    min-width: 44px;
+  }
+
+  .filters {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  .filter-btn {
+    flex: 1;
+  }
+
+  .toggle-checkbox {
+    width: 24px;
+    height: 24px;
+  }
+
+  .task-item {
+    gap: 8px;
+  }
+
+  /* 수정 모드: 입력창은 한 줄 전체, 나머지는 다음 줄 */
+  .edit-title {
+    flex-basis: 100%;
+  }
+
+  .edit-category {
+    flex: 1;
+  }
+}
